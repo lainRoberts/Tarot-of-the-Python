@@ -135,7 +135,7 @@ def base_msg():
     clear()
     print('*' * 50)
     print('\n')
-    print(('' * 12) + 'Cards cleared.' + (
+    print((' ' * 18) + 'Cards cleared.' + (
                 ' ' * 12))
     print('\n')
     print('*' * 50)

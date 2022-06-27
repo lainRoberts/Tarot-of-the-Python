@@ -3,107 +3,109 @@ import os
 import random
 from datetime import datetime
 from time import sleep
+import tarot_cards
 
-clear = lambda: os.system('cls')
-
+clear = lambda: os.system('cls') #clears console, needed for neat display of info
 drawn_cards = []
 notes_to_add = []
-
+major_arcana = tarot_cards.MajorArcana()
+minor_arcana = tarot_cards.MinorArcana()
 
 def reset_deck():
     tarot_deck = {
         # Suit of Cups
-        'cup1': "Ace of Cups",
-        'cup2': "Two of Cups",
-        'cup3': "Three of Cups",
-        'cup4': "Four of Cups",
-        'cup5': "Five of Cups",
-        'cup6': "Six of Cups",
-        'cup7': "Seven of Cups",
-        'cup8': "Eight of Cups",
-        'cup9': "Nine of Cups",
-        'cup10': "Ten of Cups",
-        'cupjack': "Jack of Cups",
-        'cupknight': "Knight of Cups",
-        'cupking': "King of Cups",
-        'cupqueen': "Queen of Cups",
+        'cup1': minor_arcana.Cup1(),
+        'cup2': minor_arcana.Cup2(),
+        'cup3': minor_arcana.Cup3(),
+        'cup4': minor_arcana.Cup4(),
+        'cup5': minor_arcana.Cup5(),
+        'cup6': minor_arcana.Cup6(),
+        'cup7': minor_arcana.Cup7(),
+        'cup8': minor_arcana.Cup8(),
+        'cup9': minor_arcana.Cup9(),
+        'cup10':minor_arcana.Cup10(),
+        'cupjack': minor_arcana.CupJack(),
+        'cupknight': minor_arcana.CupKnight(),
+        'cupqueen': minor_arcana.CupQueen(),
+        'cupking': minor_arcana.CupKing(),
 
         # Suit of Coins
-        'coin1': "Ace of Coins",
-        'coin2': "Two of Coins",
-        'coin3': "Three of Coins",
-        'coin4': "Four of Coins",
-        'coin5': "Five of Coins",
-        'coin6': "Six of Coins",
-        'coin7': "Seven of Coins",
-        'coin8': "Eight of Coins",
-        'coin9': "Nine of Coins",
-        'coin10': "Ten of Coins",
-        'coinjack': "Jack of Coins",
-        'coinknight': "Knight of Coins",
-        'coinking': "King of Coins",
-        'coinqueen': "Queen of Coins",
+        'coin1': minor_arcana.Coin1(),
+        'coin2': minor_arcana.Coin2(),
+        'coin3': minor_arcana.Coin3(),
+        'coin4': minor_arcana.Coin4(),
+        'coin5': minor_arcana.Coin5(),
+        'coin6': minor_arcana.Coin6(),
+        'coin7': minor_arcana.Coin7(),
+        'coin8': minor_arcana.Coin8(),
+        'coin9': minor_arcana.Coin9(),
+        'coin10':minor_arcana.Coin10(),
+        'coinjack': minor_arcana.CoinJack(),
+        'coinknight': minor_arcana.CoinKnight(),
+        'coinqueen': minor_arcana.CoinQueen(),
+        'coinking': minor_arcana.CoinKing(),
 
         # Suit of Swords
-        'sword1': "Ace of Swords",
-        'sword2': "Two of Swords",
-        'sword3': "Three of Swords",
-        'sword4': "Four of Swords",
-        'sword5': "Five of Swords",
-        'sword6': "Six of Swords",
-        'sword7': "Seven of Swords",
-        'sword8': "Eight of Swords",
-        'sword9': "Nine of Swords",
-        'sword10': "Ten of Swords",
-        'swordjack': "Jack of Swords",
-        'swordknight': "Knight of Swords",
-        'swordking': "King of Swords",
-        'swordqueen': "Queen of Swords",
+        'sword1': minor_arcana.Sword1(),
+        'sword2': minor_arcana.Sword2(),
+        'sword3': minor_arcana.Sword3(),
+        'sword4': minor_arcana.Sword4(),
+        'sword5': minor_arcana.Sword5(),
+        'sword6': minor_arcana.Sword6(),
+        'sword7': minor_arcana.Sword7(),
+        'sword8': minor_arcana.Sword8(),
+        'sword9': minor_arcana.Sword9(),
+        'sword10':minor_arcana.Sword10(),
+        'swordjack': minor_arcana.SwordJack(),
+        'swordknight': minor_arcana.SwordKnight(),
+        'swordqueen': minor_arcana.SwordQueen(),
+        'swordking': minor_arcana.SwordKing(),
 
         # Suit of Wands
-        'wand1': "Ace of Wands",
-        'wand2': "Two of Wands",
-        'wand3': "Three of Wands",
-        'wand4': "Four of Wands",
-        'wand5': "Five of Wands",
-        'wand6': "Six of Wands",
-        'wand7': "Seven of Wands",
-        'wand8': "Eight of Wands",
-        'wand9': "Nine of Wands",
-        'wand10': "Ten of Wands",
-        'wandjack': "Jack of Wands",
-        'wandknight': "Knight of Wands",
-        'wandking': "King of Wands",
-        'wandqueen': "Queen of Wands",
+        'wand1': minor_arcana.Wand1(),
+        'wand2': minor_arcana.Wand2(),
+        'wand3': minor_arcana.Wand3(),
+        'wand4': minor_arcana.Wand4(),
+        'wand5': minor_arcana.Wand5(),
+        'wand6': minor_arcana.Wand6(),
+        'wand7': minor_arcana.Wand7(),
+        'wand8': minor_arcana.Wand8(),
+        'wand9': minor_arcana.Wand9(),
+        'wand10':minor_arcana.Wand10(),
+        'wandjack': minor_arcana.WandJack(),
+        'wandknight': minor_arcana.WandKnight(),
+        'wandqueen': minor_arcana.WandQueen(),
+        'wandking': minor_arcana.WandKing(),
 
-        # Major Arcanas
-        'maj_fool': 'The Fool',
-        'maj_magician': 'The Magician',
-        'maj_priestess': 'The High Priestess',
-        'maj_emperor': 'The Emperor',
-        'maj_hierophant': 'The Hierophant',
-        'maj_lovers': 'The lovers',
-        'maj_chariot': 'The Chariot',
-        'maj_strength': 'Strength',
-        'maj_hermit': 'The Hermit',
-        'maj_wheel': 'The Wheel of Fortune',
-        'maj_balance': 'Balance',
-        'maj_death': 'Death',
-        'maj_temperance': 'Temperance',
-        'maj_devil': 'The Devil',
-        'maj_tower': 'The Tower',
-        'maj_star': 'The Star',
-        'maj_moon': 'The Moon',
-        'maj_sun': 'The Sun',
-        'maj_judgement': 'The Judgement',
-        'maj_world': 'The World'
+        # # Major Arcanas
+        'maj_fool': major_arcana.TheFool(),
+        'maj_magician': major_arcana.TheMagician(),
+        'maj_priestess': major_arcana.TheHighPriestess(),
+        'maj_emperor': major_arcana.TheEmperor(),
+        'maj_hierophant': major_arcana.TheHierophant(),
+        'maj_lovers': major_arcana.TheLovers(),
+        'maj_chariot': major_arcana.TheChariot(),
+        'maj_strength': major_arcana.Strength(),
+        'maj_hermit': major_arcana.TheHermit(),
+        'maj_wheel': major_arcana.TheWheelOfFortune(),
+        'maj_balance': major_arcana.Balance(),
+        'maj_hangedman':major_arcana.TheHangedMan(),
+        'maj_death' : major_arcana.Death(),
+        'maj_temperance': major_arcana.Temperance(),
+        'maj_devil': major_arcana.TheDevil(),
+        'maj_tower': major_arcana.TheTower(),
+        'maj_star': major_arcana.TheStar(),
+        'maj_moon': major_arcana.TheMoon(),
+        'maj_sun': major_arcana.TheSun(),
+        'maj_judgement': major_arcana.Judgement(),
+        'maj_world': major_arcana.TheWorld()
         }
     return dict(tarot_deck)
 
 
 tarot_deck = reset_deck()
 drawn_cards_string = ''
-choices_displayed = False;
+choices_displayed = False
 
 
 def sign_it():
@@ -131,6 +133,7 @@ def sign_it():
                         """)
 
 
+
 def base_msg():
     clear()
     print('*' * 50)
@@ -152,7 +155,7 @@ def display_choices():
 def display_reading(to_save = False):
     #
     letter_check = (str(msvcrt.getch()).upper()) #CHECKS FROM KEYPRESS WITHOUT WAITING FOR ENTER
-    letter_check = letter_check[2] #GETS THE VALUE FROM THE STRING WE JSUT GENERATED
+    letter_check = letter_check[2] #GETS THE VALUE FROM THE STRING WE JUST GENERATED
 
     global drawn_cards_string
 
@@ -187,15 +190,31 @@ def display_reading(to_save = False):
     def draw_a_card():
         clear()
         available_cards = list(tarot_deck.items())  # Convert iterable of {tarot_deck} to a [list]
-        if len(available_cards) > 0:
-            picked_card = random.choice(available_cards)  # Picks a random card from the [list] we created in the above line
-            if not len(picked_card) == 0:
-                tarot_deck.pop(picked_card[0])  # Removes the drawn card from available cards in {tarot_deck}
-                drawn_cards.append(picked_card[1])  # Add value to [list]
+        available_cards_names = []
+
+        for item in available_cards:
+            available_cards_names.append(item[1])        
+        
+        if len(available_cards_names) > 0:
+            picked_card = random.choice(available_cards_names)  # Picks a random card from the [list] we created in the above line
+            #print(picked_card)
+
+            to_remove = []
+
+            for k, v in tarot_deck.items():
+                if v == picked_card:
+                   to_remove.append(k)
+                   card_name = (v.show_name())
+                   drawn_cards.append(card_name)
+            
+            for entry in to_remove:
+                tarot_deck.pop(entry)
 
         global drawn_cards_string
         drawn_cards_string = ' - '.join(drawn_cards)  # Creates a string of values on [list]
         display_results()
+
+  
 
     def exit_app():
         clear()
@@ -215,12 +234,6 @@ def display_reading(to_save = False):
             letter_check = 'Q'  # ONCE IT'S DONE SAVING, IT PASSES IN Q AND QUITS
 
         if letter_check == 'Q':
-            # thank_yous = 'Farewell traveler.'
-            # for i in thank_yous:
-            #     (thank_yous) = (thank_yous[1:])
-            #     print(thank_yous)
-            #     sleep(0.77)
-
             sign_it()
             if not input(''):
                 exit()
@@ -233,14 +246,28 @@ def display_reading(to_save = False):
 
     def open_notes():
         clear()
-        print('Enter your notes : ')
+        global notes_to_add
+        print(','.join(notes_to_add))
+        print('\n--------------------Enter your notes or type X to exit notepad------------------------')
+        print('\n---------------------You can also type P to clear the notes.--------------------------')
         our_input = input()
-        while our_input.upper() != 'X':
+        while our_input.upper() != 'X' and our_input.upper() != 'P' :
             notes_to_add.append(our_input)
             clear()
-            print(notes_to_add)
-            print('\n--------------------Enter more notes, or type X to exit notepad------------------------.')
+            print('. '.join(notes_to_add))
+            print('\n--------------------Enter more notes or type X to exit notepad------------------------')
+            print('\n---------------------You can also press P to clear the notes.-------------------------')
+
             our_input = input(': ')
+        if our_input.upper() == 'P':
+            print('\n-------------------Are you sure you to want to erase the notes?------------------------')
+            print('\n-----------------Type Y to confirm deletion, Type N to keep notes.---------------------')
+
+            if our_input.upper() == 'Y':
+                notes_to_add.clear()
+            else:
+                pass
+
         clear()
         display_results()
 
@@ -273,6 +300,3 @@ display_reading(to_save = True) #Saves our file once we break out of loop
 print('No more cards to draw!')
 pc_user = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
 print(f'Saved to {pc_user}\\TarotReadings.txt \n')
-
-
-sleep(137)

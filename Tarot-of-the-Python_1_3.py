@@ -300,3 +300,5 @@ display_reading(to_save = True) #Saves our file once we break out of loop
 print('No more cards to draw!')
 pc_user = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
 print(f'Saved to {pc_user}\\TarotReadings.txt \n')
+
+sleep(137)

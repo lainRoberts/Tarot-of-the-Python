@@ -1,15 +1,21 @@
+from asyncio import wait_for
 import msvcrt
 import os
 import random
 from datetime import datetime
 from time import sleep
 import tarot_cards
+import requests
+from bs4 import BeautifulSoup
 
 clear = lambda: os.system('cls') #clears console, needed for neat display of info
+cmd = 'mode 800,600'
+os.system(cmd) #MAKE TERMINAL BIGGER
 drawn_cards = []
 notes_to_add = []
-major_arcana = tarot_cards.MajorArcana()
-minor_arcana = tarot_cards.MinorArcana()
+major_arcana = tarot_cards
+minor_arcana = tarot_cards
+
 
 def reset_deck():
     tarot_deck = {
@@ -24,7 +30,7 @@ def reset_deck():
         'cup8': minor_arcana.Cup8(),
         'cup9': minor_arcana.Cup9(),
         'cup10':minor_arcana.Cup10(),
-        'cupjack': minor_arcana.CupJack(),
+        'cuppage': minor_arcana.CupPage(),
         'cupknight': minor_arcana.CupKnight(),
         'cupqueen': minor_arcana.CupQueen(),
         'cupking': minor_arcana.CupKing(),
@@ -40,7 +46,7 @@ def reset_deck():
         'coin8': minor_arcana.Coin8(),
         'coin9': minor_arcana.Coin9(),
         'coin10':minor_arcana.Coin10(),
-        'coinjack': minor_arcana.CoinJack(),
+        'coinpage': minor_arcana.CoinPage(),
         'coinknight': minor_arcana.CoinKnight(),
         'coinqueen': minor_arcana.CoinQueen(),
         'coinking': minor_arcana.CoinKing(),
@@ -56,7 +62,7 @@ def reset_deck():
         'sword8': minor_arcana.Sword8(),
         'sword9': minor_arcana.Sword9(),
         'sword10':minor_arcana.Sword10(),
-        'swordjack': minor_arcana.SwordJack(),
+        'swordpage': minor_arcana.SwordPage(),
         'swordknight': minor_arcana.SwordKnight(),
         'swordqueen': minor_arcana.SwordQueen(),
         'swordking': minor_arcana.SwordKing(),
@@ -72,7 +78,7 @@ def reset_deck():
         'wand8': minor_arcana.Wand8(),
         'wand9': minor_arcana.Wand9(),
         'wand10':minor_arcana.Wand10(),
-        'wandjack': minor_arcana.WandJack(),
+        'wandpage': minor_arcana.WandPage(),
         'wandknight': minor_arcana.WandKnight(),
         'wandqueen': minor_arcana.WandQueen(),
         'wandking': minor_arcana.WandKing(),
@@ -166,8 +172,8 @@ def display_reading(to_save = False):
             print('*' * 50)
 
         else:
-            print(('*' * 19) + 'Your card : ' + (
-                        '*' * 19) + f'\n \n {drawn_cards_string} \n \n')  # Prints the value of the dict entry we just randomly picked
+            print(('*' * 19) + ' Your card : ' + (
+                        '*' * 18) + f'\n \n {drawn_cards_string} \n \n')  # Prints the value of the dict entry we just randomly picked
             print('*' * 50)
     
     def save_it_up():
@@ -187,24 +193,52 @@ def display_reading(to_save = False):
     if (to_save == True):
         save_it_up()
 
+    def card_get_meaning(name):           
+        #print('we here')
+        char_to_replace = {' ': '-'}
+
+        # Iterate over all key-value pairs in dictionary
+        for key, value in char_to_replace.items():
+            # Replace key character with value character in string
+            url_name = name.replace(key, value)
+        #print(f'url name : {url_name}')
+        res = requests.get(f'https://www.tarot.com/tarot/cards/{url_name}/universal-waite')
+        soup = BeautifulSoup(res.text, 'html.parser')
+
+
+        finer_meaning = soup.find_all('p')
+        complete_tag = ''
+        for tag in finer_meaning:
+            complete_tag += (tag.text.strip() + '\n'+ '\n')
+        return complete_tag.replace("OR", "")
+
+
+    def get_description(obj_with_desc):
+        print(obj_with_desc.name)
+        card_name = obj_with_desc.name
+        return(card_get_meaning(card_name)) #GETS A STRING OF TEXT FROM card_get_meaning AND RETURNS IT
+
+
+
     def draw_a_card():
         clear()
         available_cards = list(tarot_deck.items())  # Convert iterable of {tarot_deck} to a [list]
         available_cards_names = []
 
         for item in available_cards:
-            available_cards_names.append(item[1])        
+            available_cards_names.append(item[1])       
+
         
         if len(available_cards_names) > 0:
             picked_card = random.choice(available_cards_names)  # Picks a random card from the [list] we created in the above line
-            #print(picked_card)
+
 
             to_remove = []
 
             for k, v in tarot_deck.items():
                 if v == picked_card:
                    to_remove.append(k)
-                   card_name = (v.show_name())
+                   card_name = (v.name)
                    drawn_cards.append(card_name)
             
             for entry in to_remove:
@@ -212,9 +246,12 @@ def display_reading(to_save = False):
 
         global drawn_cards_string
         drawn_cards_string = ' - '.join(drawn_cards)  # Creates a string of values on [list]
-        display_results()
 
-  
+        print(get_description(picked_card))
+        sleep(2)
+        input('Press any key to continue')
+        clear()
+        display_results()
 
     def exit_app():
         clear()
@@ -301,4 +338,5 @@ print('No more cards to draw!')
 pc_user = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
 print(f'Saved to {pc_user}\\TarotReadings.txt \n')
 
-sleep(137)
+sleep(3)
+input(" ")

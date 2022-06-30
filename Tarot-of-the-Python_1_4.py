@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 
 clear = lambda: os.system('cls') #clears console, needed for neat display of info
-cmd = 'mode 800,600'
+cmd = 'mode con:cols=137 lines=50'
 os.system(cmd) #MAKE TERMINAL BIGGER
 drawn_cards = []
 notes_to_add = []
@@ -193,14 +193,13 @@ def display_reading(to_save = False):
         save_it_up()
 
     def card_get_meaning(name):           
-        #print('we here')
+        
         char_to_replace = {' ': '-'}
-
         # Iterate over all key-value pairs in dictionary
         for key, value in char_to_replace.items():
             # Replace key character with value character in string
-            url_name = name.replace(key, value)
-        #print(f'url name : {url_name}')
+            url_name = name.replace(key, value)                    #GETS URL FROM NAME OF THE CARD, BY REPLACING SPACES WITH -
+        
         res = requests.get(f'https://www.tarot.com/tarot/cards/{url_name}/universal-waite')
         soup = BeautifulSoup(res.text, 'html.parser')
 
@@ -248,7 +247,7 @@ def display_reading(to_save = False):
 
         print(get_description(picked_card))
         sleep(2)
-        input('Press any key to continue')
+        input('Press Enter to continue')
         clear()
         display_results()
 

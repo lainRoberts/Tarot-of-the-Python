@@ -195,10 +195,10 @@ def display_reading(to_save = False):
     def card_get_meaning(name):           
         
         char_to_replace = {' ': '-'}
-        # Iterate over all key-value pairs in dictionary
-        for key, value in char_to_replace.items():
+        
+        for key, value in char_to_replace.items(): # Iterate over all key-value pairs in dictionary,  
             # Replace key character with value character in string
-            url_name = name.replace(key, value)                    #GETS URL FROM NAME OF THE CARD, BY REPLACING SPACES WITH -
+            url_name = name.replace(key, value)  #GETS URL FROM NAME OF THE CARD, BY REPLACING SPACES WITH -
         
         res = requests.get(f'https://www.tarot.com/tarot/cards/{url_name}/universal-waite')
         soup = BeautifulSoup(res.text, 'html.parser')
